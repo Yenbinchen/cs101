@@ -1,53 +1,40 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+#include <string.h>
 
-int main()
-{
-    int n;
-    scanf("%d",&n);
-    int num[n][7];
-    int temp=0;
-    srand(1);
-    for(int i=0; i<n; i++)
-    {
-        int use[70]={0};
-        for(int j=0; j<7; )
-        {
-            temp=rand()%69+1;   //rand()%(R-L+1)+L
-            if(use[temp]==0)
-            {
-                num[i][j]=temp;
-                use[temp]=1;
-                j++;
+int is_winning_line(const char *line, const char *winning[], int win_count) {
+    for (int i = 0; i < win_count; i++) {
+        if (strstr(line, winning[i]) != NULL) {
+            return 1; 
+        }
+    }
+    return 0; 
+}
+
+int main() {
+    FILE *infile = fopen("lotto.txt", "r");
+    FILE *outfile = fopen("win.txt", "w");
+
+    if (!infile || !outfile) {
+        perror("檔案開啟失敗");
+        return 1;
+    }
+
+    
+    const char *winning_numbers[] = { " 02", " 04", " 06" };
+    int win_count = sizeof(winning_numbers) / sizeof(winning_numbers[0]);
+
+    char line[256];
+    while (fgets(line, sizeof(line), infile)) {
+        
+        if (line[0] == '[') {
+            if (is_winning_line(line, winning_numbers, win_count)) {
+                fputs(line, outfile); 
             }
         }
-        printf("\n");
     }
-    
-    FILE*fp = fopen("lotto.txt", "w+");
-    
-    int c=0;
-    fprintf(fp, "========= lotto649 =========");
-    fprintf(fp, "\n");
-    for(int a=0; a<5; a++)
-    {
-        fprintf(fp, "[%d]:",a+1);
-        for(int b=0; b<7; b++)
-        {
-            if(c>=n)
-            {
-                fprintf(fp, " __");
-            } 
-            else
-            {
-                fprintf(fp, " %02d", num[a][b]);
-            }
-        }
-        c++;
-        fprintf(fp, "\n");
-    }
-    fprintf(fp, "========= csie@CGU =========");
-    
-    fclose(fp);
+
+    fclose(infile);
+    fclose(outfile);
+    return 0;
 }
