@@ -8,17 +8,17 @@ int is_winning_line(const char *line, int win1, int win2, int win3) {
     int num;
     const char *ptr = line;
     
-    
+
     while(*ptr && *ptr != ':') ptr++;
     if(*ptr == ':') ptr++;
     
-   
+  
     while(*ptr) {
         if(sscanf(ptr, "%d", &num) == 1) {
             if(num == win1 || num == win2 || num == win3) {
                 return 1;
             }
-            
+           
             while(*ptr && *ptr != ' ') ptr++;
             while(*ptr == ' ') ptr++;
         } else {
@@ -75,7 +75,7 @@ int main()
     fprintf(fp, "========= csie@CGU =========\n");
     fclose(fp);
 
-    
+   
     int win1, win2, win3;
     printf("請輸入三個要檢查的中獎號碼（用空格分隔）：");
     scanf("%d %d %d", &win1, &win2, &win3);
@@ -83,6 +83,9 @@ int main()
     FILE *infile = fopen("lotto.txt", "r");
     FILE *outfile = fopen("win.txt", "w");
 
+    if (!infile || !outfile) {
+        perror("檔案開啟失敗");
+        return 1;
     }
 
     char line[256];
@@ -111,4 +114,5 @@ int main()
     
     printf("兌獎結果已寫入 win.txt\n");
     return 0;
-}
+
+    }
