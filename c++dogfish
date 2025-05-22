@@ -2,31 +2,37 @@
 #include <stdio.h>
 
 using namespace std;
+
 class Animal {
-    public:
-    virtual void func1()=0;
-
-
+public:
+    virtual void func1() = 0;
 };
-class Dog : public Animal{
-    public:
-    virtual void func1(){
-        cout<<"I am dog and I eat meat"<<endl;
+
+class Dog : public Animal {
+public:
+    virtual void func1() {
+        cout << "I am dog and I eat meat" << endl;
     }
 };
 
-class Cat : public Animal{
-    public:
-    virtual void func1(){
-        cout<<"I am cat and I eat fish"<<endl;
+class Cat : public Animal {
+public:
+    virtual void func1() {
+        cout << "I am cat and I eat fish" << endl;
     }
 };
+
 int main()
 {
-    Dog D;
-    D.func1();
-    Cat C;
-    C.func1();
+    Animal* a;
+
+    a = new Dog();
+    a->func1();
+    delete a;
+
+    a = new Cat();
+    a->func1();
+    delete a;
 
     return 0;
 }
